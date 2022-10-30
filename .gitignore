@@ -26,8 +26,10 @@ hs_err_pid*
 
 .idea
 *.iml
-allure-results
+*.yml
+
 
 target
 out
 driver
+allure-results
