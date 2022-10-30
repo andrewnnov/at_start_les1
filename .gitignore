@@ -28,6 +28,8 @@ hs_err_pid*
 *.iml
 *.yml
 
+.allure
+.allure
 
 target
 out
