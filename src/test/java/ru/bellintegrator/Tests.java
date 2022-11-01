@@ -12,11 +12,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.BellAfterSearch;
-import pages.BellBeforeSearch;
-import pages.BellPageFactory;
+import pages.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Tests extends BaseTest {
@@ -89,5 +88,29 @@ public class Tests extends BaseTest {
         Assertions.assertTrue(bellPageFactory.getResultSearch().stream().anyMatch(x -> x.getText()
                 .contains(result)), "Статьи " + keyWord + " содержащие " +  result + " не найдены");
 
+    }
+
+    @Test
+    public void testOpen() {
+        GooglePageWithSearch googlePageWithSearch = new GooglePageWithSearch(chromeDriver, "открытие");
+        List<Map<String, Object>> resultSearch = googlePageWithSearch.getCollectResults();
+        googlePageWithSearch.goPage("Банк Открытие");
+        OpenPage openPage = new OpenPage(chromeDriver);
+        List<Map<String, String>> collectExchangeRates = openPage.getCollectExchangeRates();
+        System.out.println(collectExchangeRates);
+        Assertions.assertTrue(
+                Double.parseDouble(
+                        collectExchangeRates.stream()
+                                .filter(x->x.get("Валюта обмена").contains("USD"))
+                                .findFirst()
+                                .get().get("Банк покупает").replace(",",".")
+                )
+                        < Double.parseDouble(
+                        collectExchangeRates.stream()
+                                .filter(x->x.get("Валюта обмена").contains("USD"))
+                                .findFirst()
+                                .get().get("Банк продает").replace(",",".")
+                )
+        );
     }
 }
