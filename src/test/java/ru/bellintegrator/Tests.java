@@ -9,14 +9,12 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class Tests extends BaseTest {
 
@@ -94,23 +92,26 @@ public class Tests extends BaseTest {
     public void testOpen() {
         GooglePageWithSearch googlePageWithSearch = new GooglePageWithSearch(chromeDriver, "открытие");
         List<Map<String, Object>> resultSearch = googlePageWithSearch.getCollectResults();
+//        resultSearch.forEach(x -> System.out.println(x.get("NAME_PAGE").toString()));
         googlePageWithSearch.goPage("Банк Открытие");
+
         OpenPage openPage = new OpenPage(chromeDriver);
         List<Map<String, String>> collectExchangeRates = openPage.getCollectExchangeRates();
         System.out.println(collectExchangeRates);
         Assertions.assertTrue(
                 Double.parseDouble(
                         collectExchangeRates.stream()
-                                .filter(x->x.get("Валюта обмена").contains("USD"))
+                                .filter(x -> x.get("Валюта обмена").contains("USD"))
                                 .findFirst()
-                                .get().get("Банк покупает").replace(",",".")
+                                .get().get("Банк покупает").replace(",", ".")
                 )
                         < Double.parseDouble(
                         collectExchangeRates.stream()
-                                .filter(x->x.get("Валюта обмена").contains("USD"))
+                                .filter(x -> x.get("Валюта обмена").contains("USD"))
                                 .findFirst()
-                                .get().get("Банк продает").replace(",",".")
+                                .get().get("Банк продает").replace(",", ".")
                 )
         );
     }
+
 }
