@@ -3,6 +3,7 @@ package ru.bellintegrator;
 import io.qameta.allure.Feature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
+import steps.Steps;
 
 import java.util.List;
 import java.util.Map;
@@ -114,4 +116,17 @@ public class Tests extends BaseTest {
         );
     }
 
+    @Feature("Проверка курса валют")
+    @DisplayName("Проверка курса валют со степами")
+    @ParameterizedTest(name = "{displayName} {arguments}")
+    @Tag("Kotik")
+    @CsvSource({"USD"})
+    public void testOpenWithStep(String value) {
+        GooglePageWithSearch googlePageWithSearch = new GooglePageWithSearch(chromeDriver, "открытие");
+        List<Map<String, Object>> resultSearch = googlePageWithSearch.getCollectResults();
+        Steps.checkContainsName(resultSearch, "Банк Открытие", chromeDriver);
+        Steps.goPageText(googlePageWithSearch, "Банк Открытие");
+        OpenPage page = new OpenPage(chromeDriver);
+        Steps.checkCourse(value, page);
+    }
 }
