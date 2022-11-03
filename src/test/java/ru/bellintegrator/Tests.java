@@ -119,7 +119,7 @@ public class Tests extends BaseTest {
     @Feature("Проверка курса валют")
     @DisplayName("Проверка курса валют со степами")
     @ParameterizedTest(name = "{displayName} {arguments}")
-    @Tag("Kotik")
+    @Tag("openBank")
     @CsvSource({"USD"})
     public void testOpenWithStep(String value) {
         GooglePageWithSearch googlePageWithSearch = new GooglePageWithSearch(chromeDriver, "открытие");
